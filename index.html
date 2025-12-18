@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title> Monkey D. Luffy - All Techniques</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    #video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      object-fit: cover;
+    }
+
+    #video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    body {
+      background-color: transparent;
+      position: relative;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    /* Update card styles for better visibility on dark background */
+    .technique-card {
+      opacity: 1;
+    }
+
+    .card {
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #333;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      color: #dc3545;
+      font-weight: 600;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+
+    .badge-type {
+      font-size: 0.7rem;
+      padding: 0.35em 0.6em;
+    }
+
+    .badge-gear {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .gear-info {
+      background-color: #fdf6e3;
+      border-left: 3px solid #ffc107;
+      padding: 8px;
+      border-radius: 5px;
+      margin-top: 8px;
+    }
+
+    .japanese-name {
+      font-family: inherit;
+      color: #333;
+    }
+
+    .search-highlight {
+      background-color: #fff3cd;
+      font-weight: 600;
+    }
+
+    .alert-light {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control,
+    .form-select {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control::placeholder {
+      color: #666;
+    }
+
+    .spinner-border.text-danger {
+      color: #dc3545 !important;
+    }
+
+    .container.my-5 {
+      background-color: transparent;
+      border-radius: 0;
+      padding: 30px;
+      backdrop-filter: none;
+      border: none;
+      margin-top: 20px;
+    }
+
+    h2.text-danger {
+      color: #ff6b6b !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+      color: white;
+    }
+
+    .btn-secondary:disabled {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      opacity: 0.65;
+      color: white;
+    }
+
+    #prevBtn,
+    #nextBtn {
+      background-color: #6c757d !important;
+      border-color: #6c757d !important;
+      color: white !important;
+    }
+
+    #prevBtn:hover:not(:disabled),
+    #nextBtn:hover:not(:disabled) {
+      background-color: #5a6268 !important;
+      border-color: #545b62 !important;
+      color: white !important;
+    }
+
+    #loading p {
+      color: white;
+    }
+
+    #noResults p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    #pageInfo {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+
+<body>
+
+  <video id="video-background" autoplay muted loop playsinline>
+    <source src="C:\Users\napol\OneDrive\Desktop\API\One-Piece-API\One Piece - Luffy Clips For Edits (4k).mp4"
+      type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div id="video-overlay"></div>
+
+  <div class="container my-5">
+    <h2 class="text-center text-danger mb-4">
+      Monkey D. Luffy - All Techniques
+    </h2>
+
+    <div class="alert alert-light mb-4">
+      <span id="statsText">Loading statistics...</span>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6 mb-2">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search techniques...">
+      </div>
+      <div class="col-md-3 mb-2">
+        <select id="typeFilter" class="form-select">
+          <option value="">All Types</option>
+          <option value="Techniques standard">Standard</option>
+          <option value="Techniques Spéciales">Special</option>
+        </select>
+      </div>
+      <div class="col-md-3 mb-2">
+        <button class="btn btn-secondary w-100" id="clearSearch">
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div id="loading" class="text-center">
+      <div class="spinner-border text-danger"></div>
+      <p>Loading techniques...</p>
+    </div>
+
+    <div class="row" id="techniqueContainer"></div>
+
+    <div id="noResults" class="text-center mt-4" style="display:none;">
+      <p class="text-muted">No techniques found.</p>
+    </div>
+
+    <div id="paginationControls" class="row mt-4" style="display:none;">
+      <div class="col-6">
+        <button id="prevBtn" class="btn btn-secondary w-100">Previous</button>
+      </div>
+      <div class="col-6">
+        <button id="nextBtn" class="btn btn-secondary w-100">Next</button>
+      </div>
+      <div class="col-12 text-center mt-2">
+        <small id="pageInfo"></small>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TECHNIQUES_API = "https://api.api-onepiece.com/v2/luffy-techniques/en";
+
+    let allTechniques = [];
+    let filteredTechniques = [];
+    let currentPage = 1;
+    const itemsPerPage = 9;
+
+    function highlightText(text, term) {
+      if (!term) return text;
+      const regex = new RegExp(`(${term})`, "gi");
+      return text.replace(regex, `<span class="search-highlight">$1</span>`);
+    }
+
+    function createTechniqueCard(technique, searchTerm) {
+      const col = document.createElement("div");
+      col.className = "col-md-4 mb-4 technique-card";
+
+      const hasGear = technique.luffy_gear && Object.keys(technique.luffy_gear).length > 0;
+
+      col.innerHTML = `
+    <div class="card h-100">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <div>
+          <span class="badge bg-danger badge-type">${technique.type}</span>
+          ${hasGear ? `<span class="badge badge-gear badge-type ms-1">Gear</span>` : ""}
+        </div>
+        <small class="text-muted">#${technique.id}</small>
+      </div>
+
+      <div class="card-body">
+        <h5 class="card-title japanese-name">
+          ${highlightText(technique.name, searchTerm)}
+        </h5>
+
+        <h6 class="text-muted">
+          ${highlightText(technique.translation, searchTerm)}
+        </h6>
+
+        <p class="small">
+          ${highlightText(technique.description, searchTerm)}
+        </p>
+
+        ${hasGear ? `
+          <div class="gear-info">
+            <strong>${technique.luffy_gear.name}</strong>
+            <p class="small mb-0">${technique.luffy_gear.description}</p>
+          </div>` : ""}
+      </div>
+    </div>
+  `;
+
+      return col;
+    }
+
+    function updateStatistics() {
+      document.getElementById("statsText").innerHTML =
+        `Showing <strong>${filteredTechniques.length}</strong> of <strong>${allTechniques.length}</strong> techniques`;
+    }
+
+    function updateDisplay() {
+      const container = document.getElementById("techniqueContainer");
+      const noResults = document.getElementById("noResults");
+      const pagination = document.getElementById("paginationControls");
+
+      container.innerHTML = "";
+
+      if (filteredTechniques.length === 0) {
+        noResults.style.display = "block";
+        pagination.style.display = "none";
+        return;
+      }
+
+      noResults.style.display = "none";
+
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = filteredTechniques.slice(start, end);
+
+      pageItems.forEach(t => {
+        container.appendChild(createTechniqueCard(t, searchInput.value.toLowerCase()));
+      });
+
+      const totalPages = Math.ceil(filteredTechniques.length / itemsPerPage);
+      document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+
+      document.getElementById("prevBtn").disabled = currentPage === 1;
+      document.getElementById("nextBtn").disabled = currentPage === totalPages;
+
+      pagination.style.display = totalPages > 1 ? "flex" : "none";
+    }
+
+    function filterTechniques() {
+      const search = searchInput.value.toLowerCase();
+      const type = typeFilter.value;
+
+      filteredTechniques = allTechniques.filter(t => {
+        const searchMatch =
+          t.name.toLowerCase().includes(search) ||
+          t.translation.toLowerCase().includes(search) ||
+          t.description.toLowerCase().includes(search);
+
+        const typeMatch = !type || t.type === type;
+        return searchMatch && typeMatch;
+      });
+
+      currentPage = 1;
+      updateStatistics();
+      updateDisplay();
+    }
+
+    prevBtn.onclick = () => { currentPage--; updateDisplay(); };
+    nextBtn.onclick = () => { currentPage++; updateDisplay(); };
+
+    clearSearch.onclick = () => {
+      searchInput.value = "";
+      typeFilter.value = "";
+      filteredTechniques = allTechniques;
+      currentPage = 1;
+      updateStatistics();
+      updateDisplay();
+    };
+
+    async function loadTechniques() {
+      const res = await fetch(TECHNIQUES_API);
+      allTechniques = await res.json();
+      filteredTechniques = allTechniques;
+
+      document.getElementById("loading").style.display = "none";
+      updateStatistics();
+      updateDisplay();
+    }
+
+    searchInput.addEventListener("input", filterTechniques);
+    typeFilter.addEventListener("change", filterTechniques);
+
+    document.addEventListener("DOMContentLoaded", loadTechniques);
+  </script>
+
+</body>
+
+</html>
